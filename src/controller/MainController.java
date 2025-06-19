@@ -32,11 +32,19 @@ public class MainController {
 
     @FXML
     private void handleCargo() {
-        System.out.println("新建订单按钮被点击");
-        contentPane.getChildren().clear();
-        Label cargoLabel = new Label("新建订单功能待实现");
-        cargoLabel.setStyle("-fx-font-size: 24px;");
-        contentPane.getChildren().add(cargoLabel);
+        try {
+            System.out.println("新建订单按钮被点击");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/NewOrder.fxml"));
+            Parent newOrderRoot = loader.load();
+            contentPane.getChildren().clear();
+            contentPane.getChildren().add(newOrderRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+            contentPane.getChildren().clear();
+            Label errorLabel = new Label("错误：无法加载新建订单页面。");
+            errorLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: red;");
+            contentPane.getChildren().add(errorLabel);
+        }
     }
 
     @FXML

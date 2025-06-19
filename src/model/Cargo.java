@@ -1,89 +1,68 @@
 package model;
 
+import javafx.beans.property.*;
+
 public class Cargo {
-    private String name;
-    private String ID;
-    private double length;
-    private double width;
-    private double height;
-    private double actualWeight;
-    private String type;
 
-    public Cargo() {
+    private final StringProperty id;
+    private final StringProperty name;
+    private final StringProperty type;
+    private final IntegerProperty quantity;
+    private final DoubleProperty width;
+    private final DoubleProperty length;
+    private final DoubleProperty height;
+    private final DoubleProperty weight;
+    private final ReadOnlyDoubleWrapper volume;
+
+    public Cargo(String id, String name, String type, int quantity, double width, double length, double height, double weight) {
+        this.id = new SimpleStringProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.type = new SimpleStringProperty(type);
+        this.quantity = new SimpleIntegerProperty(quantity);
+        this.width = new SimpleDoubleProperty(width);
+        this.length = new SimpleDoubleProperty(length);
+        this.height = new SimpleDoubleProperty(height);
+        this.weight = new SimpleDoubleProperty(weight);
+        this.volume = new ReadOnlyDoubleWrapper();
+
+        // Bind volume to dimensions
+        this.volume.bind(this.width.multiply(this.length).multiply(this.height));
     }
 
-    public Cargo(String name, String ID, double length, double height, double width, double actualWeight, String type) {
-        this.name = name;
-        this.ID = ID;
-        this.length = length;
-        this.height = height;
-        this.width = width;
-        this.actualWeight = actualWeight;
-        this.type = type;
-    }
+    // --- Property Getters ---
+    public StringProperty idProperty() { return id; }
+    public StringProperty nameProperty() { return name; }
+    public StringProperty typeProperty() { return type; }
+    public IntegerProperty quantityProperty() { return quantity; }
+    public DoubleProperty widthProperty() { return width; }
+    public DoubleProperty lengthProperty() { return length; }
+    public DoubleProperty heightProperty() { return height; }
+    public DoubleProperty weightProperty() { return weight; }
+    public ReadOnlyDoubleProperty volumeProperty() { return volume.getReadOnlyProperty(); }
 
-    public String getType() {
-        return type;
-    }
+    // --- Standard Getters ---
+    public String getId() { return id.get(); }
+    public String getName() { return name.get(); }
+    public String getType() { return type.get(); }
+    public int getQuantity() { return quantity.get(); }
+    public double getWidth() { return width.get(); }
+    public double getLength() { return length.get(); }
+    public double getHeight() { return height.get(); }
+    public double getWeight() { return weight.get(); }
+    public double getVolume() { return volume.get(); }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getLength() {
-        return length;
-    }
-
-    public void setLength(double length) {
-        this.length = length;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
-
-    public double getActualWeight() {
-        return actualWeight;
-    }
-
-    public void setActualWeight(double actualWeight) {
-        this.actualWeight = actualWeight;
-    }
-
-    public double calculateVolumeWeight() {
-        return (length * width * height) / 6000.0;
-    }
+    // --- Standard Setters ---
+    public void setId(String id) { this.id.set(id); }
+    public void setName(String name) { this.name.set(name); }
+    public void setType(String type) { this.type.set(type); }
+    public void setQuantity(int quantity) { this.quantity.set(quantity); }
+    public void setWidth(double width) { this.width.set(width); }
+    public void setLength(double length) { this.length.set(length); }
+    public void setHeight(double height) { this.height.set(height); }
+    public void setWeight(double weight) { this.weight.set(weight); }
 
     public double getChargeableWeight() {
-        double volumeWeight = calculateVolumeWeight();
-        return Math.max(actualWeight, volumeWeight);
+        double volumeWeight = getVolume() / 6000.0;
+        return Math.max(getWeight(), volumeWeight);
     }
 }

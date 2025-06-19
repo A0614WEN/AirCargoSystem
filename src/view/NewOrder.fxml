@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewOrderController">
+    <VBox spacing="20" styleClass="padded-container">
+        <!-- Flight Information -->
+        <VBox styleClass="form-section">
+            <Label text="航班信息" styleClass="section-title"/>
+            <GridPane hgap="10" vgap="10">
+                <Label text="航班号" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="flightNumberField" promptText="例如 CA1234" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="航班日期" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                <DatePicker fx:id="flightDatePicker" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                <Label text="起飞机场" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="departureAirportField" promptText="例如 PEK" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="降落机场" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                <TextField fx:id="arrivalAirportField" promptText="例如 LAX" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                <Label text="最大载重量 (kg)" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="maxPayloadField" promptText="例如 50000" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            </GridPane>
+        </VBox>
+
+        <HBox spacing="20">
+            <!-- Customer Information -->
+            <VBox styleClass="form-section" HBox.hgrow="ALWAYS">
+                <Label text="客户信息" styleClass="section-title"/>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="客户类型" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <ComboBox fx:id="customerTypeComboBox" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <Label text="客户编号" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="customerIdField" promptText="客户编号" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label text="客户姓名" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="customerNameField" promptText="客户姓名" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    <Label text="客户电话" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="customerPhoneField" promptText="客户电话" styleClass="form-input" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    <Label text="客户地址" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextField fx:id="customerAddressField" promptText="客户地址" styleClass="form-input" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                </GridPane>
+            </VBox>
+
+            <!-- Cargo Information -->
+            <VBox styleClass="form-section" HBox.hgrow="ALWAYS">
+                <Label text="货物信息" styleClass="section-title"/>
+                <TableView fx:id="cargoTableView" prefHeight="200">
+                    <columns>
+                        <TableColumn text="货物名称" fx:id="cargoNameColumn"/>
+                        <TableColumn text="货物类型" fx:id="cargoTypeColumn"/>
+                        <TableColumn text="货物重量" fx:id="cargoWeightColumn"/>
+                        <TableColumn text="货物体积" fx:id="cargoVolumeColumn"/>
+                        <TableColumn text="货物数量" fx:id="cargoQuantityColumn"/>
+                    </columns>
+                </TableView>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="添加货物" onAction="#handleAddCargo"/>
+                    <Button text="修改货物" onAction="#handleModifyCargo"/>
+                    <Button text="删除货物" onAction="#handleDeleteCargo"/>
+                </HBox>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="20">
+            <!-- Sender Information -->
+            <VBox styleClass="form-section" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <StackPane>
+                        <Circle radius="15" styleClass="sender-icon-background"/>
+                        <Text text="寄" styleClass="icon-text"/>
+                    </StackPane>
+                    <Label text="寄件人信息" styleClass="section-title"/>
+                </HBox>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="姓名" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="senderNameField" promptText="寄件人姓名" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <Label text="电话" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="senderPhoneField" promptText="寄件人电话" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label text="地址" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="senderAddressField" promptText="寄件人地址" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                </GridPane>
+            </VBox>
+
+            <!-- Recipient Information -->
+            <VBox styleClass="form-section" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <StackPane>
+                        <Circle radius="15" styleClass="recipient-icon-background"/>
+                        <Text text="收" styleClass="icon-text"/>
+                    </StackPane>
+                    <Label text="收件人信息" styleClass="section-title"/>
+                </HBox>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="姓名" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="recipientNameField" promptText="收件人姓名" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    <Label text="电话" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="recipientPhoneField" promptText="收件人电话" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    <Label text="地址" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="recipientAddressField" promptText="收件人地址" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                </GridPane>
+            </VBox>
+        </HBox>
+
+        <!-- Order Actions -->
+        <HBox spacing="20" alignment="CENTER_LEFT" styleClass="form-section">
+            <Label text="支付方式"/>
+            <ComboBox fx:id="paymentMethodComboBox" styleClass="form-input"/>
+            <Label text="订单日期"/>
+            <DatePicker fx:id="orderDatePicker" styleClass="form-input"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="新建订单" onAction="#handleCreateOrder" styleClass="create-order-button"/>
+        </HBox>
+    </VBox>
+</ScrollPane>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCargoDialogController">
+    <headerText>
+        添加新货物
+    </headerText>
+    <content>
+        <GridPane hgap="10" vgap="10">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="10"/>
+            </padding>
+
+            <Label text="货物编号:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="idField" promptText="货物编号" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="货物名称:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="nameField" promptText="货物名称" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="货物类型:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="typeComboBox" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="货物数量:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="quantityField" promptText="货物数量" styleClass="form-input" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="货物重量 (kg):" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <TextField fx:id="weightField" promptText="货物重量" styleClass="form-input" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            <Label text="尺寸 (W*L*H cm):" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <HBox spacing="5" GridPane.rowIndex="5" GridPane.columnIndex="1">
+                <TextField fx:id="widthField" promptText="宽度" styleClass="form-input"/>
+                <TextField fx:id="lengthField" promptText="长度" styleClass="form-input"/>
+                <TextField fx:id="heightField" promptText="高度" styleClass="form-input"/>
+            </HBox>
+        </GridPane>
+    </content>
+    <buttonTypes>
+        <ButtonType fx:id="okButton" text="确定" buttonData="OK_DONE"/>
+        <ButtonType text="取消" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+</DialogPane>
