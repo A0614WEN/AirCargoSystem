@@ -15,20 +15,12 @@ public class MainController {
     @FXML
     private StackPane contentPane;
 
-    @FXML
     public void initialize() {
         // Show a default view when the main scene loads
-        handleHome();
+        handleOrderManagement();
     }
 
-    @FXML
-    private void handleHome() {
-        System.out.println("订单管理被点击");
-        contentPane.getChildren().clear();
-        Label welcomeLabel = new Label("欢迎使用航空货物管理系统");
-        welcomeLabel.setStyle("-fx-font-size: 24px;");
-        contentPane.getChildren().add(welcomeLabel);
-    }
+
 
     @FXML
     private void handleCargo() {
@@ -48,12 +40,20 @@ public class MainController {
     }
 
     @FXML
-    private void handleTransport() {
-        System.out.println("物流情况按钮被点击");
-        contentPane.getChildren().clear();
-        Label transportLabel = new Label("物流情况功能待实现");
-        transportLabel.setStyle("-fx-font-size: 24px;");
-        contentPane.getChildren().add(transportLabel);
+    private void handleOrderManagement() {
+        try {
+            System.out.println("订单管理按钮被点击");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/OrderManagement.fxml"));
+            Parent orderManagementRoot = loader.load();
+            contentPane.getChildren().clear();
+            contentPane.getChildren().add(orderManagementRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+            contentPane.getChildren().clear();
+            Label errorLabel = new Label("错误：无法加载订单管理页面。");
+            errorLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: red;");
+            contentPane.getChildren().add(errorLabel);
+        }
     }
 
     @FXML

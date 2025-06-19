@@ -1,0 +1,94 @@
+.content-pane {
+    -fx-background-color: #f0f2f5;
+    -fx-padding: 20;
+}
+
+.form-section {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 3);
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-padding: 0 0 10 0;
+}
+
+.form-input {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: transparent;
+    -fx-background-radius: 5;
+    -fx-prompt-text-fill: #b0b0b0;
+    -fx-font-size: 14px;
+    -fx-padding: 8 12;
+}
+
+.form-input:focused {
+    -fx-background-color: white;
+    -fx-border-color: #0078D7;
+    -fx-border-width: 1;
+}
+
+.sender-icon .circle {
+    -fx-fill: #1a1a1a;
+}
+
+.recipient-icon .circle {
+    -fx-fill: #ff4444;
+}
+
+.icon-text {
+    -fx-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.create-order-button {
+    -fx-background-color: #0078D7;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-background-radius: 5;
+}
+
+.create-order-button:hover {
+    -fx-background-color: #005a9e;
+}
+
+.action-button {
+     -fx-background-color: #6c757d;
+     -fx-text-fill: white;
+     -fx-background-radius: 5;
+}
+
+.action-button:hover {
+    -fx-background-color: #5a6268;
+}
+
+/* TableView Customization */
+.table-view {
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f8f9fa;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #e0e0e0 transparent;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-border-color: transparent transparent #e0e0e0 transparent;
+    -fx-padding: 8px;
+}

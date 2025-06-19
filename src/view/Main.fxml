@@ -6,16 +6,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane alignment="CENTER" prefHeight="504.0" prefWidth="759.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<StackPane alignment="CENTER" prefHeight="504.0" prefWidth="759.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController" stylesheets="@../style.css">
     <children>
         <BorderPane fx:id="mainBorderPane">
             <left>
                 <VBox fx:id="navBar" alignment="TOP_CENTER" minHeight="600" prefHeight="800.0" prefWidth="250.0" spacing="15.0" styleClass="nav-bar" BorderPane.alignment="CENTER">
                     <children>
                         <Label styleClass="title-label" text="功能" />
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleHome" styleClass="nav-button" text="        订单管理" />
-                        <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleCargo" styleClass="nav-button" text="        新建订单" />
-                        <Button mnemonicParsing="false" onAction="#handleTransport" styleClass="nav-button" text="        物流状况" />
+                        <Button onAction="#handleOrderManagement" prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="订单管理" />
+                        <Button onAction="#handleCargo" prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="新建订单" />
+                        <Button prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="客户管理" />
                         <Pane VBox.vgrow="ALWAYS" />
                         <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-button" text="        退出登录" />
                     </children>

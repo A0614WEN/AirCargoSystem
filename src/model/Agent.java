@@ -38,6 +38,13 @@ public class Agent {
         return totalFreight;
     }
 
+    public double calculateSingleCargoFreight(Cargo cargo) {
+        double weight = cargo.getChargeableWeight();
+        double rate = rateCalculator.calculateRate(weight);
+        // Note: Discount is not applied here as customer info is not available
+        return weight * rate;
+    }
+
     public void Print(Customer customer, Flight flight, Order order, Sender sender, Recipient recipient, Payment paymentMethod) {
         double totalWeight = this.calculateTotalWeight(order);
 
