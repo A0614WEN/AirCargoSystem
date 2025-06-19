@@ -1,3 +1,4 @@
+import controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -5,16 +6,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // 加载登录界面
+    public void start(Stage primaryStage) throws Exception{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
+        Parent root = loader.load();
 
-        // 设置窗口标题
-        primaryStage.setTitle("航空货运管理系统");
+        LoginController controller = loader.getController();
+        controller.setPrimaryStage(primaryStage);
 
-        // 创建场景
+        primaryStage.setTitle("航空货物管理系统 - 登录");
 
-        // 设置场景并显示
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setMaximized(true); 
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
