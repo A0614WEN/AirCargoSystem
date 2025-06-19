@@ -101,8 +101,8 @@
 .nav-bar {
     -fx-background-color: white;
     background-color: white;
-    -fx-padding: 20px 0;
-    padding: 20px 0;
+    -fx-padding: 30px 10px;
+    padding: 30px 10px;
     -fx-alignment: top-center;
     -fx-spacing: 10;
     -fx-background-radius: 15;
@@ -136,8 +136,8 @@
     -fx-background-radius: 10;
     border-radius: 10px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
-    -fx-padding: 20;
-    padding: 20px;
+    -fx-padding: 30px;
+    padding: 30px;
 }
 
 .padded-container {

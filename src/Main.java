@@ -4,22 +4,39 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import util.SessionUtil;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Login.fxml"));
+    public void start(Stage primaryStage) throws Exception {
+        String fxmlFile;
+        boolean loggedIn = SessionUtil.isLoggedIn();
+
+        if (loggedIn) {
+            fxmlFile = "/view/Main.fxml";
+        } else {
+            fxmlFile = "/view/Login.fxml";
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();
 
-        LoginController controller = loader.getController();
-        controller.setPrimaryStage(primaryStage);
+        if (!loggedIn) {
+            LoginController controller = loader.getController();
+            controller.setPrimaryStage(primaryStage);
+        }
 
-        primaryStage.setTitle("航空货物管理系统 - 登录");
+        primaryStage.setTitle("航空货物管理系统");
+        primaryStage.setScene(new Scene(root));
 
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setMaximized(true); 
+        if (loggedIn) {
+            primaryStage.setFullScreenExitHint("");
+            primaryStage.setFullScreen(true);
+        } else {
+            primaryStage.setMaximized(true);
+        }
+
         primaryStage.show();
     }
 

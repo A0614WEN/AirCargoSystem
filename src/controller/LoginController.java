@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.AdministratorUser;
 import util.UserUtil;
+import util.SessionUtil;
 
 import java.io.IOException;
 
@@ -41,6 +42,7 @@ public class LoginController {
             AdministratorUser user = UserUtil.findUser(username, password);
             if (user != null) {
                 System.out.println("Login Successful!");
+                SessionUtil.createSession(username);
                 // Proceed to the main app scene
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/Main.fxml"));
                 Parent mainRoot = loader.load();
@@ -48,7 +50,8 @@ public class LoginController {
 
                 Scene scene = new Scene(mainRoot);
                 primaryStage.setScene(scene);
-                primaryStage.setMaximized(true);
+                primaryStage.setFullScreenExitHint("");
+                primaryStage.setFullScreen(true);
             } else {
                 errorLabel.setText("用户名或密码错误!");
                 errorLabel.getStyleClass().setAll("error-label");
