@@ -211,13 +211,17 @@ public class NewOrderController {
 
         String finalFilePath;
         String orderNumber;
+        File ordersDir = new File("orders");
 
         if (orderFilePath != null) {
             finalFilePath = orderFilePath;
             orderNumber = finalFilePath.substring(finalFilePath.indexOf('_') + 1, finalFilePath.lastIndexOf('.'));
         } else {
+            if (!ordersDir.exists()) {
+                ordersDir.mkdirs();
+            }
             orderNumber = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(java.time.LocalDateTime.now());
-            finalFilePath = "order_" + orderNumber + ".txt";
+            finalFilePath = new File(ordersDir, "order_" + orderNumber + ".txt").getPath();
         }
 
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(finalFilePath), StandardCharsets.UTF_8))) {

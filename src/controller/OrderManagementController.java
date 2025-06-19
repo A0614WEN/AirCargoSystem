@@ -66,8 +66,13 @@ public class OrderManagementController {
     }
 
     private void loadOrderFiles() {
-        File dir = new File(".");
-        File[] files = dir.listFiles((d, name) -> name.startsWith("order_") && name.endsWith(".txt"));
+        File ordersDir = new File("orders");
+        // Ensure the directory exists before trying to list files
+        if (!ordersDir.exists()) {
+            ordersDir.mkdirs();
+        }
+
+        File[] files = ordersDir.listFiles((d, name) -> name.startsWith("order_") && name.endsWith(".txt"));
         if (files != null) {
             for (File file : files) {
                 try (BufferedReader reader = Files.newBufferedReader(file.toPath(), StandardCharsets.UTF_8)) {
