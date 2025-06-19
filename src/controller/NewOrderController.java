@@ -189,8 +189,38 @@ public class NewOrderController {
 
     @FXML
     private void handleEditCargo() {
-        // TODO: Implement cargo editing logic
-        showAlert(Alert.AlertType.INFORMATION, "功能未实现", "编辑货物功能正在开发中。");
+        Cargo selectedCargo = cargoTableView.getSelectionModel().getSelectedItem();
+        if (selectedCargo == null) {
+            showAlert(Alert.AlertType.WARNING, "没有选择", "请选择要编辑的货物。");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/view/AddCargoDialog.fxml"));
+            DialogPane dialogPane = loader.load();
+
+            AddCargoDialogController controller = loader.getController();
+            controller.setCargo(selectedCargo); // Pre-fill data
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setDialogPane(dialogPane);
+            dialog.setTitle("编辑货物");
+            dialog.initOwner(cargoTableView.getScene().getWindow());
+
+            Optional<ButtonType> result = dialog.showAndWait();
+
+            if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                controller.updateCargo(selectedCargo); // Update the original cargo object
+                cargoTableView.refresh(); // Refresh table to show changes
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "加载错误", "无法打开编辑货物对话框。\n" + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "程序错误", "发生意外错误：\n" + e.getMessage());
+        }
     }
 
     @FXML
