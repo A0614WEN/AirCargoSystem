@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import model.Cargo;
-import model.Order;
+
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -59,7 +59,7 @@ public class NewOrderController {
     //</editor-fold>
 
     private final ObservableList<Cargo> cargoList = FXCollections.observableArrayList();
-    private Order existingOrder;
+    private String orderFilePath = null; // 用于存储正在编辑的订单文件的路径
 
     @FXML
     public void initialize() {
@@ -83,10 +83,76 @@ public class NewOrderController {
         paymentMethodComboBox.setItems(FXCollections.observableArrayList("支付宝支付", "微信支付", "现金支付"));
     }
 
-    public void loadOrderData(Order order) {
-        this.existingOrder = order;
-        // TODO: Populate all fields from the order object for modification
-        createOrderButton.setText("完成修改");
+    /**
+     * 从文件加载订单数据到UI界面进行修改
+     * @param filePath 订单文件的路径
+     */
+    public void loadOrderFromFile(String filePath) {
+        this.orderFilePath = filePath;
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8))) {
+            String line;
+            String section = "";
+            cargoList.clear();
+
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().startsWith("---") && line.trim().endsWith("---")) {
+                    section = line.trim();
+                    if (section.contains("货物清单")) {
+                        reader.readLine(); // 跳过表头
+                        reader.readLine(); // 跳过分隔符
+                    }
+                    continue;
+                }
+
+                if (line.trim().isEmpty()) continue;
+
+                switch (section) {
+                    case "--- 航班信息 ---":
+                        if (line.contains("航班号:")) flightNumberField.setText(parseValue(line));
+                        else if (line.contains("起飞机场:")) departureAirportField.setText(parseValue(line));
+                        else if (line.contains("抵达机场:")) arrivalAirportField.setText(parseValue(line));
+                        else if (line.contains("航班日期:")) flightDatePicker.setValue(LocalDate.parse(parseValue(line), dateFormatter));
+                        else if (line.contains("最大载重(kg):")) maxWeightField.setText(parseValue(line));
+                        break;
+                    case "--- 客户信息 ---":
+                        if (line.contains("客户类型:")) customerTypeComboBox.setValue(parseValue(line));
+                        else if (line.contains("客户ID:")) customerIdField.setText(parseValue(line));
+                        else if (line.contains("姓名:")) customerNameField.setText(parseValue(line));
+                        else if (line.contains("电话:")) customerPhoneField.setText(parseValue(line));
+                        else if (line.contains("地址:")) customerAddressField.setText(parseValue(line));
+                        break;
+                    case "--- 发件人信息 ---":
+                        if (line.contains("姓名:")) senderNameField.setText(parseValue(line));
+                        else if (line.contains("电话:")) senderPhoneField.setText(parseValue(line));
+                        else if (line.contains("地址:")) senderAddressField.setText(parseValue(line));
+                        break;
+                    case "--- 收件人信息 ---":
+                        if (line.contains("姓名:")) recipientNameField.setText(parseValue(line));
+                        else if (line.contains("电话:")) recipientPhoneField.setText(parseValue(line));
+                        else if (line.contains("地址:")) recipientAddressField.setText(parseValue(line));
+                        break;
+                    case "--- 货物清单 ---":
+                        String[] parts = line.trim().split("\\s{2,}");
+                        if (parts.length >= 8) {
+                            // 顺序: ID, 名称, 类型, 数量, 重量, 长度, 宽度, 高度
+                            cargoList.add(new Cargo(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]), Double.parseDouble(parts[6]), Double.parseDouble(parts[5]), Double.parseDouble(parts[7]), Double.parseDouble(parts[4])));
+                        }
+                        break;
+                    case "--- 订单信息 ---":
+                        if (line.contains("支付方式:")) paymentMethodComboBox.setValue(parseValue(line));
+                        else if (line.contains("下单日期:")) orderDatePicker.setValue(LocalDate.parse(parseValue(line), dateFormatter));
+                        break;
+                }
+            }
+            cargoTableView.setItems(cargoList);
+            createOrderButton.setText("完成修改");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "加载失败", "读取或解析订单文件失败: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -143,23 +209,33 @@ public class NewOrderController {
             return;
         }
 
-        String orderNumber = (existingOrder != null) ? existingOrder.getOrderNumber() : "ORDER-" + System.currentTimeMillis();
-        String fileName = "order_" + orderNumber + ".txt";
+        String finalFilePath;
+        String orderNumber;
 
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), StandardCharsets.UTF_8))) {
+        if (orderFilePath != null) {
+            finalFilePath = orderFilePath;
+            orderNumber = finalFilePath.substring(finalFilePath.indexOf('_') + 1, finalFilePath.lastIndexOf('.'));
+        } else {
+            orderNumber = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss").format(java.time.LocalDateTime.now());
+            finalFilePath = "order_" + orderNumber + ".txt";
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(finalFilePath), StandardCharsets.UTF_8))) {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
             writer.write("--- 航班信息 ---\n");
             writer.write("航班号: " + flightNumberField.getText() + "\n");
             writer.write("起飞机场: " + departureAirportField.getText() + "\n");
-            writer.write("降落机场: " + arrivalAirportField.getText() + "\n");
-            writer.write("航班日期: " + flightDatePicker.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE) + "\n");
+            writer.write("抵达机场: " + arrivalAirportField.getText() + "\n");
+            writer.write("航班日期: " + flightDatePicker.getValue().format(dateFormatter) + "\n");
             writer.write("最大载重(kg): " + maxWeightField.getText() + "\n\n");
 
             writer.write("--- 客户信息 ---\n");
             writer.write("客户类型: " + customerTypeComboBox.getValue() + "\n");
-            writer.write("客户编号: " + customerIdField.getText() + "\n");
-            writer.write("客户姓名: " + customerNameField.getText() + "\n");
-            writer.write("客户电话: " + customerPhoneField.getText() + "\n");
-            writer.write("客户地址: " + customerAddressField.getText() + "\n\n");
+            writer.write("客户ID: " + customerIdField.getText() + "\n");
+            writer.write("姓名: " + customerNameField.getText() + "\n");
+            writer.write("电话: " + customerPhoneField.getText() + "\n");
+            writer.write("地址: " + customerAddressField.getText() + "\n\n");
 
             writer.write("--- 发件人信息 ---\n");
             writer.write("姓名: " + senderNameField.getText() + "\n");
@@ -171,29 +247,27 @@ public class NewOrderController {
             writer.write("电话: " + recipientPhoneField.getText() + "\n");
             writer.write("地址: " + recipientAddressField.getText() + "\n\n");
 
-            writer.write("--- 货物信息 ---\n");
+            writer.write("--- 货物清单 ---\n");
             writer.write(String.format("%-20s %-15s %-10s %-8s %-10s %-10s %-10s %-10s %-12s\n",
                     "ID", "名称", "类型", "数量", "重量(kg)", "长(cm)", "宽(cm)", "高(cm)", "体积(cm³)"));
+            
+            char[] separator = new char[115];
+            java.util.Arrays.fill(separator, '-');
+            writer.write(new String(separator) + "\n");
+
             for (Cargo cargo : cargoList) {
                 writer.write(String.format("%-20s %-15s %-10s %-8d %-10.2f %-10.2f %-10.2f %-10.2f %-12.2f\n",
-                        cargo.getId(),
-                        cargo.getName(),
-                        cargo.getType(),
-                        cargo.getQuantity(),
-                        cargo.getWeight(),
-                        cargo.getLength(),
-                        cargo.getWidth(),
-                        cargo.getHeight(),
-                        cargo.getVolume()));
+                        cargo.getId(), cargo.getName(), cargo.getType(), cargo.getQuantity(),
+                        cargo.getWeight(), cargo.getLength(), cargo.getWidth(), cargo.getHeight(), cargo.getVolume()));
             }
             writer.write("\n");
 
             writer.write("--- 订单信息 ---\n");
             writer.write("订单号: " + orderNumber + "\n");
-            writer.write("下单日期: " + orderDatePicker.getValue().format(DateTimeFormatter.ISO_LOCAL_DATE) + "\n");
+            writer.write("下单日期: " + orderDatePicker.getValue().format(dateFormatter) + "\n");
             writer.write("支付方式: " + paymentMethodComboBox.getValue() + "\n");
 
-            showAlert(Alert.AlertType.INFORMATION, "操作成功", (existingOrder == null ? "订单创建成功！" : "订单修改成功！") + "\n订单号: " + orderNumber);
+            showAlert(Alert.AlertType.INFORMATION, "操作成功", (orderFilePath == null ? "订单创建成功！" : "订单修改成功！") + "\n订单号: " + orderNumber);
             clearFields();
 
         } catch (IOException e) {
@@ -262,5 +336,22 @@ public class NewOrderController {
         paymentMethodComboBox.setPromptText("支付方式");
         orderDatePicker.setValue(LocalDate.now());
         cargoList.clear();
+
+        // 重置修改状态
+        orderFilePath = null;
+        createOrderButton.setText("创建订单");
+    }
+
+    /**
+     * 从冒号分隔的行中解析值
+     * @param line 待解析的行
+     * @return 冒号后的值
+     */
+    private String parseValue(String line) {
+        String[] parts = line.split(":", 2);
+        if (parts.length > 1) {
+            return parts[1].trim();
+        }
+        return "";
     }
 }

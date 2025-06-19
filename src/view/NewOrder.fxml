@@ -27,7 +27,7 @@
                 <Label text="降落机场" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
                 <TextField fx:id="arrivalAirportField" promptText="例如 JFK" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
                 <Label text="最大载重 (kg)" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <TextField fx:id="maxWeightField" promptText="例如 5000" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <TextField fx:id="maxWeightField" promptText="例如 500000" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
             </GridPane>
         </VBox>
 
@@ -42,7 +42,7 @@
             <VBox styleClass="form-section" spacing="10" GridPane.columnIndex="0">
                 <Label text="客户信息" styleClass="section-title"/>
                 <ComboBox fx:id="customerTypeComboBox" promptText="客户类型" styleClass="form-input" maxWidth="Infinity"/>
-                <TextField fx:id="customerIdField" promptText="客户编号 (可选)" styleClass="form-input"/>
+                <TextField fx:id="customerIdField" promptText="客户编号" styleClass="form-input"/>
                 <TextField fx:id="customerNameField" promptText="客户姓名" styleClass="form-input"/>
                 <TextField fx:id="customerPhoneField" promptText="客户电话" styleClass="form-input"/>
                 <TextField fx:id="customerAddressField" promptText="客户地址" styleClass="form-input"/>

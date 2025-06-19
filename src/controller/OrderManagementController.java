@@ -22,9 +22,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 import java.util.stream.Collectors;
+import javafx.scene.layout.StackPane;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 public class OrderManagementController {
 
@@ -82,71 +84,81 @@ public class OrderManagementController {
     }
 
     private OrderSummary parseOrderFile(BufferedReader reader, String filePath) throws IOException {
+        String orderNumber = null;
+        String orderDateStr = null;
+        String sender = null;
+        String recipient = null;
         List<Cargo> cargoList = new ArrayList<>();
-        String content = reader.lines().collect(Collectors.joining("\n"));
+        String section = "";
+        String line;
 
-        String orderNumber = extractValue(content, "订单号:\\s*(.*?)");
-        String orderDateStr = extractValue(content, "下单日期:\\s*(.*?)");
-        String sender = extractValue(content, "--- 发件人信息 ---\\s*姓名:\\s*(.*?)");
-        String recipient = extractValue(content, "--- 收件人信息 ---\\s*姓名:\\s*(.*?)");
+        while ((line = reader.readLine()) != null) {
+            if (line.trim().startsWith("--- ") && line.trim().endsWith(" ---")) {
+                section = line.trim();
+                if (section.contains("货物清单")) {
+                    // 跳过清单的表头和分隔符行
+                    reader.readLine();
+                    reader.readLine();
+                }
+                continue;
+            }
+
+            if (line.trim().isEmpty()) continue;
+
+            if (section.equals("--- 货物清单 ---")) {
+                String[] cargoParts = line.trim().split("\\s{2,}");
+                if (cargoParts.length >= 8) {
+                    try {
+                        cargoList.add(new Cargo(
+                            cargoParts[0], cargoParts[1], cargoParts[2],
+                            Integer.parseInt(cargoParts[3]),
+                            Double.parseDouble(cargoParts[6]), // width
+                            Double.parseDouble(cargoParts[5]), // length
+                            Double.parseDouble(cargoParts[7]), // height
+                            Double.parseDouble(cargoParts[4])  // weight
+                        ));
+                    } catch (NumberFormatException e) {
+                        System.err.println("警告: 解析货物行时数字格式错误，已跳过。文件: " + filePath + ", 行: " + line);
+                    }
+                }
+            } else {
+                String[] parts = line.split(":", 2);
+                if (parts.length < 2) continue;
+                String key = parts[0].trim();
+                String value = parts[1].trim();
+
+                switch (key) {
+                    case "姓名":
+                        if (section.equals("--- 发件人信息 ---")) {
+                            sender = value;
+                        } else if (section.equals("--- 收件人信息 ---")) {
+                            recipient = value;
+                        }
+                        break;
+                    case "订单号":
+                        orderNumber = value;
+                        break;
+                    case "下单日期":
+                        orderDateStr = value;
+                        break;
+                }
+            }
+        }
 
         if (orderDateStr == null || orderDateStr.isEmpty()) {
             System.err.println("警告: 无法从文件中解析订单日期，已跳过: " + filePath);
             return null;
         }
-
         if (orderNumber == null || orderNumber.isEmpty()) {
             System.err.println("警告: 无法从文件中解析订单号，已跳过: " + filePath);
             return null;
         }
 
-        // Corrected regex to handle dimensions like "1.0*2.0*3.0"
-        Pattern cargoPattern = Pattern.compile("(\\S+)\\s+(\\S+)\\s+(\\S+)\\s+(\\d+)\\s+([\\d.]+)\\s+([\\d.*\\*]+)");
-        Matcher cargoMatcher = cargoPattern.matcher(content);
-        while (cargoMatcher.find()) {
-            if (cargoMatcher.group(1).equals("ID")) continue; // Skip header
-
-            String dimensionStr = cargoMatcher.group(6);
-            String[] dims = dimensionStr.split("\\*");
-            double width = 0, length = 0, height = 0;
-            if (dims.length == 3) {
-                try {
-                    width = Double.parseDouble(dims[0]);
-                    length = Double.parseDouble(dims[1]);
-                    height = Double.parseDouble(dims[2]);
-                } catch (NumberFormatException e) {
-                    System.err.println("警告: 无法解析货物尺寸，已跳过货物。文件: " + filePath);
-                    continue; // Skip this cargo item
-                }
-            }
-
-            cargoList.add(new Cargo(
-                cargoMatcher.group(1), // id
-                cargoMatcher.group(2), // name
-                cargoMatcher.group(3), // type
-                Integer.parseInt(cargoMatcher.group(4)), // quantity
-                width,
-                length,
-                height,
-                Double.parseDouble(cargoMatcher.group(5)) // weight
-            ));
-        }
-
         LocalDate orderDate = LocalDate.parse(orderDateStr, DateTimeFormatter.ISO_LOCAL_DATE);
+        double totalFreight = calculateTotalFreight(cargoList);
         String status = determineStatus(orderDate);
 
-        double totalFreight = calculateTotalFreight(cargoList);
-
         return new OrderSummary(orderNumber, orderDateStr, status, String.format("%.2f", totalFreight), sender, recipient, filePath);
-    }
-
-    private String extractValue(String content, String regex) {
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(content);
-        if (matcher.find()) {
-            return matcher.group(1).trim();
-        }
-        return null;
     }
 
     private double calculateTotalFreight(List<Cargo> cargoItems) {
@@ -218,7 +230,30 @@ public class OrderManagementController {
             return;
         }
 
-        showAlert(Alert.AlertType.INFORMATION, "功能待定", "订单 " + orderToModify.getOrderNumber() + " 的修改功能正在开发中。");
+        try {
+            // 找到主内容的StackPane
+            StackPane contentPane = (StackPane) orderTableView.getScene().lookup("#contentPane");
+            if (contentPane == null) {
+                showAlert(Alert.AlertType.ERROR, "程序错误", "无法找到主内容面板，无法切换视图。");
+                return;
+            }
+
+            // 加载新建/修改订单的FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/NewOrder.fxml"));
+            Parent newOrderRoot = loader.load();
+
+            // 获取控制器并加载订单数据
+            NewOrderController newOrderController = loader.getController();
+            newOrderController.loadOrderFromFile(orderToModify.getFilePath());
+
+            // 切换视图
+            contentPane.getChildren().clear();
+            contentPane.getChildren().add(newOrderRoot);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "加载失败", "加载订单修改页面时出错: " + e.getMessage());
+        }
     }
 
     @FXML
