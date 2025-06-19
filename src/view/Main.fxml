@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane alignment="CENTER" prefHeight="504.0" prefWidth="759.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController" stylesheets="@../style.css">
+<StackPane alignment="CENTER" prefHeight="504.0" prefWidth="759.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
     <children>
         <BorderPane fx:id="mainBorderPane">
             <left>
@@ -17,7 +17,7 @@
                         <Button onAction="#handleCargo" prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="新建订单" />
                         <Button onAction="#handleLogisticsManagement" prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="物流管理" />
                         <Pane VBox.vgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-button" text="        退出登录" />
+                        <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-button" text="退出登录" />
                     </children>
                     <padding>
                         <Insets top="20.0" />

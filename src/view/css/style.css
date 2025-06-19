@@ -3,6 +3,8 @@
     background-color: #f0f4f8;
     -fx-font-family: "Microsoft YaHei";
     font-family: "Microsoft YaHei";
+    -fx-font-size: 14px; /* Set base font size */
+    font-size: 14px;
 }
 
 .title-label {
@@ -226,4 +228,27 @@
 .date-picker .text-field {
     -fx-background-color: #f5f5f5;
     background-color: #f5f5f5;
+}
+
+/* TableView Styles */
+.table-view {
+    -fx-font-size: 15px; /* Larger font for table content */
+    font-size: 15px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #ADD8E6; /* Light Blue for header */
+    background-color: #ADD8E6;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #2F4F4F; /* Dark Slate Gray for header text */
+    -fx-font-weight: bold;
+    font-weight: bold;
+}
+
+.table-cell {
+    -fx-padding: 8px; /* Add padding to cells */
+    padding: 8px;
+    -fx-alignment: CENTER_LEFT;
 }
