@@ -3,10 +3,14 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import model.Agent;
 import model.Cargo;
 import model.OrderSummary;
@@ -20,13 +24,10 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
 import java.util.stream.Collectors;
-import javafx.scene.layout.StackPane;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
 public class OrderManagementController {
 
@@ -63,6 +64,9 @@ public class OrderManagementController {
         freightColumn.setCellValueFactory(new PropertyValueFactory<>("freight"));
         senderColumn.setCellValueFactory(new PropertyValueFactory<>("sender"));
         recipientColumn.setCellValueFactory(new PropertyValueFactory<>("recipient"));
+
+        // Add a custom comparator for the freight column to sort it as a number
+        freightColumn.setComparator(Comparator.comparingDouble(s -> Double.parseDouble(s.replace(",", ""))));
     }
 
     private void loadOrderFiles() {
@@ -196,7 +200,14 @@ public class OrderManagementController {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
+
                 if (order.getOrderNumber().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (order.getOrderDate().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (order.getStatus().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                } else if (order.getFreight().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 } else if (order.getSender().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
@@ -206,7 +217,15 @@ public class OrderManagementController {
                 return false;
             });
         });
-        orderTableView.setItems(filteredData);
+
+        // Wrap the FilteredList in a SortedList.
+        SortedList<OrderSummary> sortedData = new SortedList<>(filteredData);
+
+        // Bind the SortedList comparator to the TableView comparator.
+        sortedData.comparatorProperty().bind(orderTableView.comparatorProperty());
+
+        // Set the items in the TableView to the SortedList.
+        orderTableView.setItems(sortedData);
     }
 
     private void setupSelectAllCheckBox() {
