@@ -10,7 +10,7 @@
     </padding>
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <TextField fx:id="searchField" promptText="按订单号、发件人或收件人搜索..." styleClass="form-input" HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="searchField" prefWidth="400.0" promptText="按订单号、发件人或收件人搜索..." styleClass="form-input" HBox.hgrow="ALWAYS"/>
     </HBox>
 
     <TableView fx:id="orderTableView" VBox.vgrow="ALWAYS">

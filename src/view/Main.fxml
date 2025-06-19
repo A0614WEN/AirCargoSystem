@@ -15,7 +15,7 @@
                         <Label styleClass="title-label" text="功能" />
                         <Button onAction="#handleOrderManagement" prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="订单管理" />
                         <Button onAction="#handleCargo" prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="新建订单" />
-                        <Button prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="客户管理" />
+                        <Button onAction="#handleLogisticsManagement" prefHeight="50.0" prefWidth="200.0" styleClass="nav-button" text="物流管理" />
                         <Pane VBox.vgrow="ALWAYS" />
                         <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="nav-button" text="        退出登录" />
                     </children>

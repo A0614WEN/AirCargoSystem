@@ -57,6 +57,23 @@ public class MainController {
     }
 
     @FXML
+    private void handleLogisticsManagement() {
+        try {
+            System.out.println("物流管理按钮被点击");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/LogisticsManagement.fxml"));
+            Parent logisticsManagementRoot = loader.load();
+            contentPane.getChildren().clear();
+            contentPane.getChildren().add(logisticsManagementRoot);
+        } catch (IOException e) {
+            e.printStackTrace();
+            contentPane.getChildren().clear();
+            Label errorLabel = new Label("错误：无法加载物流管理页面。");
+            errorLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: red;");
+            contentPane.getChildren().add(errorLabel);
+        }
+    }
+
+    @FXML
     private void handleLogout() throws IOException {
         SessionUtil.clearSession();
 
