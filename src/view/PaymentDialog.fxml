@@ -6,7 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<DialogPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PaymentDialogController">
+<DialogPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PaymentDialogController"
+            prefWidth="800" prefHeight="850">
     <header>
         <VBox alignment="CENTER" spacing="10">
             <Label fx:id="paymentInfoLabel" text="请用[支付方式]支付 [金额] 元" wrapText="true">
@@ -17,8 +18,8 @@
         </VBox>
     </header>
     <content>
-        <StackPane minHeight="250" minWidth="250">
-            <ImageView fx:id="qrCodeImageView" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
+        <StackPane minHeight="750" minWidth="750">
+            <ImageView fx:id="qrCodeImageView" fitHeight="750.0" fitWidth="750.0" pickOnBounds="true" preserveRatio="true" />
         </StackPane>
     </content>
     <buttonTypes>
