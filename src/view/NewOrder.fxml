@@ -12,21 +12,21 @@
         <!-- Flight Information -->
         <VBox styleClass="form-section" alignment="CENTER">
             <Label text="航班信息" styleClass="section-title"/>
-            <GridPane hgap="20" vgap="10">
+            <GridPane hgap="10" vgap="10">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0"/>
                     <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0"/>
                     <ColumnConstraints hgrow="SOMETIMES" percentWidth="15.0"/>
                 </columnConstraints>
-                <Label text="航班号" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label text="航班号" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
                 <TextField fx:id="flightNumberField" promptText="例如 CA1234" styleClass="form-input" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                <Label text="航班日期" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                <Label text="航班日期" GridPane.rowIndex="0" GridPane.columnIndex="2" GridPane.halignment="RIGHT"/>
                 <DatePicker fx:id="flightDatePicker" promptText="选择日期" styleClass="form-input" maxWidth="Infinity" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
-                <Label text="起飞机场" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label text="起飞机场" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
                 <TextField fx:id="departureAirportField" promptText="例如 PEK" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                <Label text="降落机场" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                <Label text="降落机场" GridPane.rowIndex="1" GridPane.columnIndex="2" GridPane.halignment="RIGHT"/>
                 <TextField fx:id="arrivalAirportField" promptText="例如 JFK" styleClass="form-input" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
-                <Label text="最大载重 (kg)" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label text="最大载重 (kg)" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="RIGHT"/>
                 <TextField fx:id="maxWeightField" promptText="例如 500000" styleClass="form-input" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
             </GridPane>
         </VBox>
@@ -49,7 +49,7 @@
             </VBox>
 
             <!-- Cargo Information -->
-            <VBox styleClass="form-section" spacing="10" GridPane.columnIndex="1">
+            <VBox styleClass="form-section" spacing="10" GridPane.columnIndex="1" alignment="CENTER">
                 <Label text="货物信息" styleClass="section-title"/>
                 <TableView fx:id="cargoTableView" prefHeight="220.0">
                     <columns>
@@ -78,7 +78,7 @@
 
             <!-- Sender Information -->
             <VBox styleClass="form-section" spacing="10" GridPane.columnIndex="0" alignment="CENTER">
-                <HBox alignment="CENTER_LEFT" spacing="10">
+                <HBox alignment="CENTER" spacing="10">
                     <StackPane>
                         <Circle radius="15" style="-fx-fill: #1a1a1a;"/>
                         <Text text="寄" style="-fx-fill: white; -fx-font-weight: bold;"/>
@@ -92,7 +92,7 @@
 
             <!-- Recipient Information -->
             <VBox styleClass="form-section" spacing="10" GridPane.columnIndex="1" alignment="CENTER">
-                <HBox alignment="CENTER_LEFT" spacing="10">
+                <HBox alignment="CENTER" spacing="10">
                     <StackPane>
                         <Circle radius="15" style="-fx-fill: #ff4444;"/>
                         <Text text="收" style="-fx-fill: white; -fx-font-weight: bold;"/>
