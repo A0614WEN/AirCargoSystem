@@ -18,18 +18,25 @@ public class PaymentDialogController {
 
     public void setOrder(OrderSummary order, String paymentMethod) {
         String freight = order.getFreight();
-
         paymentInfoLabel.setText(String.format("请用 %s 支付 %s 元", paymentMethod, freight));
 
         if (paymentMethod != null && !"现金支付".equals(paymentMethod)) {
-            // 假设二维码图片放在项目的 resources/qrcodes 目录下
-            // 注意：运行时，路径可能需要调整，例如使用 getClass().getResource()
-            String qrCodePath = "src/main/resources/qrcodes/" + paymentMethod + ".png";
+            // 由于项目结构非标准，资源文件未被正确复制到类路径，
+            // 我们回退到使用文件系统路径加载。这在IDE中可以工作，但可移植性较差。
+            String projectDir = System.getProperty("user.dir");
+            String qrCodePath = projectDir + "/resources/qrcodes/" + paymentMethod + ".png";
             File qrCodeFile = new File(qrCodePath);
+
             if (qrCodeFile.exists()) {
-                Image qrCodeImage = new Image(qrCodeFile.toURI().toString());
-                qrCodeImageView.setImage(qrCodeImage);
-                qrCodeImageView.setVisible(true);
+                try {
+                    Image qrCodeImage = new Image(qrCodeFile.toURI().toString());
+                    qrCodeImageView.setImage(qrCodeImage);
+                    qrCodeImageView.setVisible(true);
+                } catch (Exception e) {
+                    qrCodeImageView.setImage(null);
+                    qrCodeImageView.setVisible(false);
+                    System.err.println("加载二维码图片时出错: " + e.getMessage());
+                }
             } else {
                 qrCodeImageView.setImage(null);
                 qrCodeImageView.setVisible(false);
