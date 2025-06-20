@@ -65,6 +65,17 @@
     background-color: #9AC9D9;
 }
 
+.button-danger {
+    -fx-background-color: #dc3545;
+    background-color: #dc3545;
+    -fx-text-fill: white;
+}
+
+.button-danger:hover {
+    -fx-background-color: #c82333;
+    background-color: #c82333;
+}
+
 .button-secondary {
     -fx-background-color: transparent;
     background-color: transparent;

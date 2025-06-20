@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PaymentDialogController">
+    <header>
+        <VBox alignment="CENTER" spacing="10">
+            <Label fx:id="paymentInfoLabel" text="请用[支付方式]支付 [金额] 元" wrapText="true">
+                <font>
+                    <Font name="System Bold" size="16.0" />
+                </font>
+            </Label>
+        </VBox>
+    </header>
+    <content>
+        <StackPane minHeight="250" minWidth="250">
+            <ImageView fx:id="qrCodeImageView" fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" />
+        </StackPane>
+    </content>
+    <buttonTypes>
+        <ButtonType fx:id="completePaymentButton" text="完成支付" buttonData="OK_DONE" />
+        <ButtonType text="取消" buttonData="CANCEL_CLOSE" />
+    </buttonTypes>
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+</DialogPane>

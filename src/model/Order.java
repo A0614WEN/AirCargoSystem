@@ -1,21 +1,33 @@
 package model;
 
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.util.ArrayList;
 
 public class Order {
     private String orderNumber;
-    private String orderDate;
+    private java.time.LocalDate orderDate;
+    private String customerType;
     private Customer customer;
     private Sender sender;
     private Recipient recipient;
     private Flight flight;
     private ArrayList<Cargo> cargoItems;
-    private Payment paymentMethod;
+    private String paymentMethod;
     private String status;
     private double freight = 0;
+    private String paymentStatus; // 新增支付状态
+    private transient SimpleBooleanProperty selected = new SimpleBooleanProperty(false); // 用于TableView的复选框
 
-    public Order(String orderNumber, String orderDate, Customer customer, Sender sender, Recipient recipient
-            , Flight flight, ArrayList<Cargo> cargoItems, Payment paymentMethod) {
+    public Order() {
+        this.sender = new Sender();
+        this.recipient = new Recipient();
+        this.cargoItems = new ArrayList<>();
+        this.paymentStatus = "未支付"; // 默认值
+    }
+
+    public Order(String orderNumber, java.time.LocalDate orderDate, Customer customer, Sender sender, Recipient recipient
+            , Flight flight, ArrayList<Cargo> cargoItems, String paymentMethod) {
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.customer = customer;
@@ -24,6 +36,7 @@ public class Order {
         this.flight = flight;
         this.cargoItems = cargoItems;
         this.paymentMethod = paymentMethod;
+        this.paymentStatus = "未支付"; // 默认设置为未支付
     }
 
     public void addCargo(Cargo cargo) {
@@ -38,11 +51,11 @@ public class Order {
         this.orderNumber = orderNumber;
     }
 
-    public String getOrderDate() {
+    public java.time.LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(String orderDate) {
+    public void setOrderDate(java.time.LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -86,11 +99,19 @@ public class Order {
         this.recipient = recipient;
     }
 
-    public Payment getPaymentMethod() {
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
+    }
+
+    public String getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(Payment paymentMethod) {
+    public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
@@ -108,5 +129,25 @@ public class Order {
 
     public void setFreight(double freight) {
         this.freight = freight;
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public boolean isSelected() {
+        return selected.get();
+    }
+
+    public SimpleBooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
     }
 }

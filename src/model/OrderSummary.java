@@ -13,8 +13,9 @@ public class OrderSummary {
     private final StringProperty recipient;
     private final StringProperty filePath;
     private final SimpleBooleanProperty selected;
+    private final StringProperty paymentStatus;
 
-    public OrderSummary(String orderNumber, String orderDate, String status, String freight, String sender, String recipient, String filePath) {
+    public OrderSummary(String orderNumber, String orderDate, String status, String freight, String sender, String recipient, String filePath, String paymentStatus) {
         this.orderNumber = new SimpleStringProperty(orderNumber);
         this.orderDate = new SimpleStringProperty(orderDate);
         this.status = new SimpleStringProperty(status);
@@ -23,6 +24,7 @@ public class OrderSummary {
         this.recipient = new SimpleStringProperty(recipient);
         this.filePath = new SimpleStringProperty(filePath);
         this.selected = new SimpleBooleanProperty(false);
+        this.paymentStatus = new SimpleStringProperty(paymentStatus);
     }
 
     public String getOrderNumber() {
@@ -91,5 +93,17 @@ public class OrderSummary {
 
     public void setSelected(boolean selected) {
         this.selected.set(selected);
+    }
+
+    public String getPaymentStatus() {
+        return paymentStatus.get();
+    }
+
+    public StringProperty paymentStatusProperty() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus.set(paymentStatus);
     }
 }

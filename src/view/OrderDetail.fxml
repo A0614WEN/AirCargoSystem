@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="15" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OrderDetailController">
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <Label text="订单详情" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="8">
+        <Label text="订单编号:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Label fx:id="orderNumberLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="订单日期:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label fx:id="orderDateLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="客户类型:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label fx:id="customerTypeLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <Label text="支付方式:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Label fx:id="paymentMethodLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <Label text="支付状态:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <Label fx:id="paymentStatusLabel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+        <Label text="运费:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <Label fx:id="freightLabel" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+        <Label text="运输状态:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <Label fx:id="statusLabel" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+        <Label text="发件人:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+        <Label fx:id="senderLabel" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+
+        <Label text="收件人:" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+        <Label fx:id="recipientLabel" GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Label text="货物清单:" style="-fx-font-weight: bold;"/>
+    <TextArea fx:id="cargoTextArea" editable="false" prefHeight="150"/>
+
+</VBox>

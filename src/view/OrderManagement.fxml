@@ -23,6 +23,7 @@
             <TableColumn fx:id="orderNumberColumn" text="订单编号" prefWidth="150"/>
             <TableColumn fx:id="orderDateColumn" text="订单时间" prefWidth="150"/>
             <TableColumn fx:id="statusColumn" text="运输状态" prefWidth="100"/>
+            <TableColumn fx:id="paymentStatusColumn" text="支付状态" prefWidth="100"/>
             <TableColumn fx:id="freightColumn" text="运费" prefWidth="100"/>
             <TableColumn fx:id="senderColumn" text="发件人" prefWidth="150"/>
             <TableColumn fx:id="recipientColumn" text="收件人" prefWidth="150"/>
@@ -33,6 +34,7 @@
     </TableView>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="paymentButton" onAction="#handlePayment" text="支付" styleClass="button, button-danger"/>
         <Button text="修改订单" onAction="#handleModifyOrder" styleClass="create-order-button"/>
         <Button text="删除订单" onAction="#handleDeleteOrder" styleClass="create-order-button"/>
     </HBox>
