@@ -99,17 +99,13 @@
     font-weight: bold;
 }
 
-/* Main layout styles */
+/* --- Navigation Bar (Left) --- */
 .nav-bar {
-    -fx-background-color: white;
-    background-color: white;
-    -fx-padding: 30px 10px;
-    padding: 30px 10px;
-    -fx-alignment: top-center;
-    -fx-spacing: 10;
-    -fx-background-radius: 15;
-    border-radius: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 2, 0);
+    -fx-background-color: #F8FAFB;
+    background-color: #F8FAFB;
+    -fx-padding: 20px 10px;
+    padding: 20px 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 2, 4);
 }
 
 .nav-button {
@@ -221,8 +217,8 @@
 }
 
 .combo-box .list-cell:hover {
-    -fx-background-color: #e0e0e0;
-    background-color: #e0e0e0;
+    -fx-background-color: #F6FAFF;
+    background-color: #F6FAFF;
 }
 
 .date-picker .text-field {
@@ -237,7 +233,8 @@
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #ADD8E6; /* Light Blue for header */
+    -fx-background-color: #F0F2F5; /* Light Gray for header */
+    background-color: #F0F2F5;
     background-color: #ADD8E6;
 }
 
