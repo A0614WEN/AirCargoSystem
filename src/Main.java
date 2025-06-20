@@ -41,6 +41,9 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
+        System.setProperty("prism.lcdtext", "false");
+        System.setProperty("prism.allowhidpi", "true");
+        System.setProperty("glass.win.uiScale.enabled", "true");
         launch(args);
     }
 }
