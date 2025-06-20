@@ -3,6 +3,7 @@ package model;
 import javafx.beans.property.SimpleBooleanProperty;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     private String orderNumber;
@@ -12,7 +13,7 @@ public class Order {
     private Sender sender;
     private Recipient recipient;
     private Flight flight;
-    private ArrayList<Cargo> cargoItems;
+    private List<Cargo> cargoItems;
     private String paymentMethod;
     private String status;
     private double freight = 0;
@@ -27,7 +28,7 @@ public class Order {
     }
 
     public Order(String orderNumber, java.time.LocalDate orderDate, Customer customer, Sender sender, Recipient recipient
-            , Flight flight, ArrayList<Cargo> cargoItems, String paymentMethod) {
+            , Flight flight, List<Cargo> cargoItems, String paymentMethod) {
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
         this.customer = customer;
@@ -67,11 +68,11 @@ public class Order {
         this.sender = sender;
     }
 
-    public ArrayList<Cargo> getCargoItems() {
+    public List<Cargo> getCargoItems() {
         return cargoItems;
     }
 
-    public void setCargoItems(ArrayList<Cargo> cargoItems) {
+    public void setCargoItems(List<Cargo> cargoItems) {
         this.cargoItems = cargoItems;
     }
 
