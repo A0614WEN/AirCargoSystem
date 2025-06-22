@@ -4,3 +4,4 @@ src文件夹是源码
 AdministratorUser.txt存储的是用户注册的账号密码邮箱信息
 session.txt存储的是当前的账号（这样可以不用每次都需要登录）
 我使用的是JDK1.8写的，应该是可以直接运行的，不需要换环境配置
+如果有bug可以查看GitHub仓库提交issue（https://github.com/A0614WEN/AirCargoSystem.git）
